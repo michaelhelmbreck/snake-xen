@@ -19,6 +19,7 @@ function resetGame() {
     generateFood(); // Generate new food
     if (gameInterval) clearInterval(gameInterval); // Clear previous interval
     gameInterval = setInterval(draw, speed); // Start a new game interval
+    document.getElementById('scoreDisplay').innerText = `Score: ${score}`; // Reset score display
 }
 
 function generateFood() {
@@ -52,6 +53,7 @@ function draw() {
         clearInterval(gameInterval); // Clear current interval
         gameInterval = setInterval(draw, speed); // Start a new game interval
         generateFood(); // Generate new food
+        document.getElementById('scoreDisplay').innerText = `Score: ${score}`; // Update score display
     } else {
         // Remove the tail
         snake.pop();
