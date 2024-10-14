@@ -79,4 +79,4 @@ document.addEventListener('keydown', (event) => {
 
 // Start the game loop
 resetGame(); // Initialize game state
-setInterval(draw, 300); // Run the game loop every 100 milliseconds
+setInterval(draw, 900); // Run the game loop every 100 milliseconds
