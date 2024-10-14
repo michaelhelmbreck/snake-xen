@@ -20,27 +20,28 @@
       border: 1px solid #fff;
     }
 
-    /* Styles for control buttons */
-    .controls {
+    /* Styles for mini control buttons */
+    .mini-controls {
       display: flex;
       justify-content: center;
+      align-items: center;
       flex-wrap: wrap;
       margin-top: 20px;
     }
 
-    .control-button {
+    .mini-button {
       background-color: #555;
       color: white;
       border: none;
-      padding: 20px;
+      padding: 10px;
       margin: 5px;
-      font-size: 20px;
+      font-size: 18px;
       border-radius: 5px;
       cursor: pointer;
       user-select: none;
     }
 
-    .control-button:active {
+    .mini-button:active {
       background-color: #777;
     }
   </style>
@@ -50,14 +51,14 @@
 
   <canvas id="gameCanvas" width="400" height="400"></canvas>
 
-  <!-- On-screen controls -->
-  <div class="controls">
-    <button class="control-button" id="upBtn">Up</button>
+  <!-- Mini control panel for mobile -->
+  <div class="mini-controls">
+    <button class="mini-button" id="upBtn">▲</button>
     <div style="display: flex;">
-      <button class="control-button" id="leftBtn">Left</button>
-      <button class="control-button" id="rightBtn">Right</button>
+      <button class="mini-button" id="leftBtn">◀</button>
+      <button class="mini-button" id="rightBtn">▶</button>
     </div>
-    <button class="control-button" id="downBtn">Down</button>
+    <button class="mini-button" id="downBtn">▼</button>
   </div>
 
   <script>
@@ -118,7 +119,7 @@
       }
     });
 
-    // Handle on-screen button controls
+    // Handle mini control button clicks
     document.getElementById('upBtn').addEventListener('click', () => {
       if (dy === 0) {
         dx = 0;
