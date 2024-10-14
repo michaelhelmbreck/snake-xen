@@ -37,7 +37,7 @@
         <div class="login-box">
             <!-- Telegram Login Widget -->
             <script async src="https://telegram.org/js/telegram-widget.js?22"
-                    data-telegram-login="TonFapperbot" <!-- Replace with your bot's username -->
+                    data-telegram-login="TonFapperbot" 
                     data-size="large" 
                     data-onauth="onTelegramAuth(user)"
                     data-request-access="write"></script>
@@ -47,11 +47,10 @@
     <!-- JavaScript function to handle user login -->
     <script type="text/javascript">
         function onTelegramAuth(user) {
-            // After successful login, redirect to the Snake game
             console.log('User logged in:', user); // Log user information to console
             alert('Logged in as ' + user.first_name + ' ' + user.last_name); // Show alert with user info
             // Redirect to the Snake game
-            window.location.href = 'https://www.google.com'; // Test redirection
+            window.location.href = 'https://michaelhelmbreck.github.io/snake-xen/snake.html?user=' + user.username;
         }
     </script>
 </body>
