@@ -14,7 +14,21 @@
   </style>
 </head>
 <body>
+  <div id="usernameDisplay" style="font-size: 20px; margin: 20px; color: white;"></div>
+
   <canvas id="gameCanvas" width="400" height="400"></canvas>
+
+  <script>
+    // Get the username from the URL parameters
+    const urlParams = new URLSearchParams(window.location.search);
+    const username = urlParams.get('user');
+
+    if (username) {
+        console.log('User:', username); // Log the username to the console
+        // Display the username on the game screen
+        document.getElementById('usernameDisplay').innerText = `Welcome, ${username}!`;
+    }
+  </script>
 
   <script src="snake.js"></script>
 </body>
