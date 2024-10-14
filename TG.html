@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login with Telegram</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 50px;
+            background-color: #f4f4f9;
+        }
+        h1 {
+            color: #333;
+        }
+        .container {
+            background: #fff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            display: inline-block;
+        }
+        .container h1 {
+            margin-bottom: 20px;
+        }
+        .login-box {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Login with Telegram</h1>
+        <p>Sign in to play the Snake Game!</p>
+
+        <div class="login-box">
+            <!-- Telegram Login Widget -->
+            <script async src="https://telegram.org/js/telegram-widget.js?22"
+                    data-telegram-login="TonFapperbot" <!-- Replace with your bot's username -->
+                    data-size="large" 
+                    data-onauth="onTelegramAuth(user)"
+                    data-request-access="write"></script>
+        </div>
+    </div>
+
+    <!-- JavaScript function to handle user login -->
+    <script type="text/javascript">
+        function onTelegramAuth(user) {
+            // After successful login, redirect to the Snake game
+            window.location.href = 'https://github.com/michaelhelmbreck/snake-xen.git;
+        }
+    </script>
+</body>
+</html>
