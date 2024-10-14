@@ -1,108 +1,87 @@
 const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
 
-const grid = 20;
-let count = 0;
-let snake = {
-  x: 160,
-  y: 160,
-  dx: grid,
-  dy: 0,
-  cells: [],
-  maxCells: 4
-};
-let apple = {
-  x: 320,
-  y: 320
-};
+// Game properties
+const boxSize = 20; // Size of each box
+let snake = [{ x: 10, y: 10 }];
+let direction = { x: 0, y: 0 };
+let food = {};
+let score = 0; // Initialize score
+let gameInterval;
+let speed = 100; // Initial speed
 
-// random apple placement
-function getRandomInt(min, max) {
-  return Math.floor(Math.random() * (max - min)) + min;
+function resetGame() {
+    // Reset game variables
+    snake = [{ x: 10, y: 10 }];
+    direction = { x: 0, y: 0 };
+    score = 0; // Reset score
+    speed = 100; // Reset speed
+    generateFood(); // Generate new food
+    if (gameInterval) clearInterval(gameInterval); // Clear previous interval
+    gameInterval = setInterval(draw, speed); // Start a new game interval
 }
 
-// game loop
-function loop() {
-  requestAnimationFrame(loop);
-
-  if (++count < 4) {
-    return;
-  }
-  count = 0;
-
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-  // move snake
-  snake.x += snake.dx;
-  snake.y += snake.dy;
-
-  // wrap snake position horizontally on edge of screen
-  if (snake.x < 0) {
-    snake.x = canvas.width - grid;
-  } else if (snake.x >= canvas.width) {
-    snake.x = 0;
-  }
-
-  // wrap snake position vertically on edge of screen
-  if (snake.y < 0) {
-    snake.y = canvas.height - grid;
-  } else if (snake.y >= canvas.height) {
-    snake.y = 0;
-  }
-
-  // keep track of where snake has been
-  snake.cells.unshift({x: snake.x, y: snake.y});
-
-  if (snake.cells.length > snake.maxCells) {
-    snake.cells.pop();
-  }
-
-  // draw apple
-  ctx.fillStyle = 'red';
-  ctx.fillRect(apple.x, apple.y, grid-1, grid-1);
-
-  // draw snake
-  ctx.fillStyle = 'green';
-  snake.cells.forEach(function(cell, index) {
-
-    ctx.fillRect(cell.x, cell.y, grid-1, grid-1);
-
-    if (cell.x === apple.x && cell.y === apple.y) {
-      snake.maxCells++;
-      apple.x = getRandomInt(0, 25) * grid;
-      apple.y = getRandomInt(0, 25) * grid;
-    }
-
-    for (let i = index + 1; i < snake.cells.length; i++) {
-      if (cell.x === snake.cells[i].x && cell.y === snake.cells[i].y) {
-        snake.x = 160;
-        snake.y = 160;
-        snake.cells = [];
-        snake.maxCells = 4;
-        snake.dx = grid;
-        snake.dy = 0;
-        apple.x = getRandomInt(0, 25) * grid;
-        apple.y = getRandomInt(0, 25) * grid;
-      }
-    }
-  });
+function generateFood() {
+    food.x = Math.floor(Math.random() * (canvas.width / boxSize));
+    food.y = Math.floor(Math.random() * (canvas.height / boxSize));
 }
 
-// keyboard controls
-document.addEventListener('keydown', function(e) {
-  if (e.which === 37 && snake.dx === 0) {
-    snake.dx = -grid;
-    snake.dy = 0;
-  } else if (e.which === 38 && snake.dy === 0) {
-    snake.dy = -grid;
-    snake.dx = 0;
-  } else if (e.which === 39 && snake.dx === 0) {
-    snake.dx = grid;
-    snake.dy = 0;
-  } else if (e.which === 40 && snake.dy === 0) {
-    snake.dy = grid;
-    snake.dx = 0;
-  }
+function draw() {
+    // Clear the canvas
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    // Draw the food
+    ctx.fillStyle = 'red';
+    ctx.fillRect(food.x * boxSize, food.y * boxSize, boxSize, boxSize);
+
+    // Draw the snake
+    ctx.fillStyle = 'green';
+    snake.forEach(segment => {
+        ctx.fillRect(segment.x * boxSize, segment.y * boxSize, boxSize, boxSize);
+    });
+
+    // Move the snake
+    const head = { x: snake[0].x + direction.x, y: snake[0].y + direction.y };
+    snake.unshift(head); // Add the new head
+
+    // Check for food collision
+    if (head.x === food.x && head.y === food.y) {
+        score++; // Increment score
+        // Increase speed as score increases
+        speed = Math.max(50, 100 - score * 5); // Speed up the game
+        clearInterval(gameInterval); // Clear current interval
+        gameInterval = setInterval(draw, speed); // Start a new game interval
+        generateFood(); // Generate new food
+    } else {
+        // Remove the tail
+        snake.pop();
+    }
+
+    // Check for wall collisions
+    if (head.x < 0 || head.x >= canvas.width / boxSize || head.y < 0 || head.y >= canvas.height / boxSize || collision(head)) {
+        clearInterval(gameInterval);
+        alert(`Game Over! Your score: ${score}. Press OK to restart.`);
+        resetGame(); // Restart the game
+    }
+}
+
+function collision(head) {
+    // Check if the head collides with any part of the snake
+    return snake.slice(1).some(segment => segment.x === head.x && segment.y === head.y);
+}
+
+// Set up the keyboard controls
+document.addEventListener('keydown', (event) => {
+    if (event.key === 'ArrowUp' && direction.y !== 1) {
+        direction = { x: 0, y: -1 };
+    } else if (event.key === 'ArrowDown' && direction.y !== -1) {
+        direction = { x: 0, y: 1 };
+    } else if (event.key === 'ArrowLeft' && direction.x !== 1) {
+        direction = { x: -1, y: 0 };
+    } else if (event.key === 'ArrowRight' && direction.x !== -1) {
+        direction = { x: 1, y: 0 };
+    }
 });
 
-requestAnimationFrame(loop);
+// Start the game
+resetGame(); // Initialize and start the game
