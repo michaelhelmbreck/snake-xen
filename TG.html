@@ -48,7 +48,10 @@
     <script type="text/javascript">
         function onTelegramAuth(user) {
             // After successful login, redirect to the Snake game
-            window.location.href = 'window.location.href = 'https://michaelhelmbreck.github.io/snake-xen/snake.html?user=' + user.username;
+            console.log('User logged in:', user); // Log user information to console
+            alert('Logged in as ' + user.first_name + ' ' + user.last_name); // Show alert with user info
+            // Redirect to the Snake game
+            window.location.href = 'https://michaelhelmbreck.github.io/snake-xen/snake.html?user=' + user.username;
         }
     </script>
 </body>
